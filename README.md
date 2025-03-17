@@ -1,13 +1,16 @@
 # Trading Data Analyzer
 
-This project focuses on analyzing stock market data for the stock '01.Bank' using Exploratory Data Analysis (EDA) and a Long Short-Term Memory (LSTM) model for time series forecasting. The dataset (`Stock_Market_Data.csv`) contains daily stock prices with columns: `Date`, `Name`, `Open`, `High`, `Low`, `Close`, and `Volume`. The project is divided into two main scripts: `EDA_latest_analysis.ipynb` for data exploration and `pipeline.py` for forecasting.
+This project focuses on analyzing stock market data for the stock '01.Bank' using Exploratory Data Analysis (EDA) and Long Short-Term Memory (LSTM) models for time series forecasting. The dataset (`Stock_Market_Data.csv`) contains daily stock prices with columns: `Date`, `Name`, `Open`, `High`, `Low`, `Close`, and `Volume`. The project includes an EDA notebook and two forecasting pipelines: `pipeline.py` (baseline) and `ongoing_dev_pipeline.py` (improved version).
 
 ## Project Structure
 
 - **data/**: Contains the dataset `Stock_Market_Data.csv`.
 - **src/**: Contains the scripts:
   - `EDA_latest_analysis.ipynb`: Jupyter Notebook for Exploratory Data Analysis.
-  - `pipeline.py`: Script for preprocessing and LSTM-based forecasting.
+  - `pipeline.py`: Baseline script for preprocessing and LSTM-based forecasting.
+  - `ongoing_dev_pipeline.py`: Enhanced script with improved LSTM forecasting.
+  - `lstm_01.Bank_best.pth`: Saved model weights from the best training run.
+  - `predictions_01.Bank.npy`: Saved predictions for further analysis.
 - **README.md**: This file.
 
 ## Exploratory Data Analysis (EDA)
@@ -64,9 +67,10 @@ The following plots were generated to explore the data:
   - Indicates relatively stable returns with occasional extreme movements.
   - Plot: See `Distribution of Daily Returns for 01.Bank` in the notebook (Cell 14).
 
-## Forecasting Pipeline
+## Forecasting Pipelines
 
-The forecasting pipeline is implemented in `pipeline.py`, focusing on predicting the stationary closing prices using an LSTM model. The script performs the following steps:
+### Baseline Pipeline (`pipeline.py`)
+The baseline forecasting pipeline is implemented in `pipeline.py`, focusing on predicting the stationary closing prices using an LSTM model. The script performs the following steps:
 
 1. **Data Loading and Preprocessing**:
    - Loads the dataset and selects data for '01.Bank'.
@@ -87,6 +91,35 @@ The forecasting pipeline is implemented in `pipeline.py`, focusing on predicting
    - Evaluates the model on the test set, achieving an MSE of 0.0387 on the differenced (stationary) series.
    - The low MSE indicates reasonable predictive performance for the stationary data.
 
+### Enhanced Pipeline (`ongoing_dev_pipeline.py`)
+The enhanced forecasting pipeline in `ongoing_dev_pipeline.py` builds on the baseline with several improvements for better performance and scalability. The script includes the following enhancements:
+
+1. **Data Loading and Preprocessing**:
+   - Same as the baseline but includes `Volume` as an additional feature to leverage its correlation with price movements (EDA insight: correlation 0.51–0.54 with `Close`).
+
+2. **LSTM Model Training**:
+   - Prepares sequences with a length of 60 days and splits data into 80% training and 20% testing sets.
+   - Trains a 3-layer LSTM model with 100 hidden units for 100 epochs, using dropout (0.2) to prevent overfitting.
+   - Incorporates a learning rate scheduler (`ReduceLROnPlateau`) to adjust the learning rate dynamically, improving convergence.
+   - Saves the best model weights (`lstm_01.Bank_best.pth`) based on the lowest training loss.
+   - Training output:
+     - Epoch 1 Loss: 0.375410
+     - Epoch 5 Loss: 0.028969
+     - Epoch 30 Loss: 0.010347 (lowest)
+     - Epoch 100 Loss: 0.014833
+
+3. **Evaluation**:
+   - Evaluates the model on the test set, achieving an MSE of 0.0364, MAE of 0.1273, and RMSE of 0.1907 on the differenced series.
+   - Saves predictions (`predictions_01.Bank.npy`) for further analysis.
+   - The improved MSE (0.0364 vs. 0.0387) indicates better predictive performance compared to the baseline.
+
+### Improvements in `ongoing_dev_pipeline.py`
+- **Increased Model Complexity**: 3 layers and 100 hidden units (vs. 2 layers and 50 units) for capturing more complex patterns.
+- **Additional Feature**: Uses `Volume` alongside `Close` to improve predictions.
+- **More Epochs**: Trains for 100 epochs (vs. 20) with a scheduler to ensure better convergence.
+- **Enhanced Evaluation**: Reports MSE, MAE, and RMSE for a comprehensive assessment.
+- **Model Persistence**: Saves the best model and predictions for reuse.
+
 ## How to Run
 
 1. **Environment Setup**:
@@ -96,10 +129,11 @@ The forecasting pipeline is implemented in `pipeline.py`, focusing on predicting
 2. **Run EDA**:
    - Open `EDA_latest_analysis.ipynb` in Jupyter Notebook and run all cells to explore the data and view visualizations.
 
-3. **Run Pipeline**:
+3. **Run Pipelines**:
    - Navigate to the `src/` directory: `cd src`.
-   - Run the pipeline: `python3 pipeline.py`.
-   - Expected output includes ADF test results, training loss per epoch, and the final MSE.
+   - Run the baseline pipeline: `python3 pipeline.py`.
+   - Run the enhanced pipeline: `python3 ongoing_dev_pipeline.py`.
+   - Expected output includes ADF test results, training loss per epoch, and evaluation metrics.
 
 ## Dependencies
 
