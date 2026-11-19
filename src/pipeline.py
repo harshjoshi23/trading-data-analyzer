@@ -27,9 +27,9 @@ def make_stationary(data, column='Close'):
     # Ensure data is finite
     if not np.isfinite(data[column]).all():
         print(f"Warning: '{column}' contains non-finite values. Cleaning data...")
-        data[column] = data[column].replace([np.inf, -np.inf], np.NaN).fillna(method='ffill')
+        data[column] = data[column].replace([np.inf, -np.inf], np.nan).ffill()
         if data[column].isna().any():
-            data[column] = data[column].fillna(method='bfill')  # Backup fill
+            data[column] = data[column].bfill()  # Backup fill
     result = adfuller(data[column].dropna())
     print(f'ADF Statistic for {column}: {result[0]}')
     print(f'p-value for {column}: {result[1]}')
@@ -52,7 +52,7 @@ if data is not None:
         data_stock = data_stock.drop(columns=['Name'])
         
         # Handle missing or infinite values and ensure daily frequency
-        data_stock = data_stock.replace([np.inf, -np.inf], np.NaN)
+        data_stock = data_stock.replace([np.inf, -np.inf], np.nan)
         data_stock = data_stock.asfreq('D', method='ffill')
         
         # Make the Close price stationary
