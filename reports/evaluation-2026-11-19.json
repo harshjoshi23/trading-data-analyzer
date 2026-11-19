@@ -1,0 +1,215 @@
+{
+  "runs": [
+    {
+      "variant": "enhanced",
+      "stock": "01.Bank",
+      "seed": 42,
+      "epochs": 100,
+      "data_sha256": "51cc2d73572ac8a77684e6c913d1d699c7dd0f55d5df1ae4c88b1c01e5bd9057",
+      "training_end": "2022-05-25",
+      "holdout_start": "2022-05-26",
+      "holdout_end": "2022-06-30",
+      "training_samples": 83,
+      "adf_training_p_value": 0.9663709533204177,
+      "differenced": true,
+      "scoring": "one-step observed market dates, original Close units",
+      "model": {
+        "mae": 0.2425353504144227,
+        "rmse": 0.33629533617818497,
+        "direction_accuracy_on_moving_days": 0.5,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "persistence_baseline": {
+        "mae": 0.23807692307692285,
+        "rmse": 0.3326293848900116,
+        "direction_accuracy_on_moving_days": 0.0,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "beats_baseline_mae": false,
+      "runtime": {
+        "python": "3.14.6",
+        "torch": "2.15.0",
+        "numpy": "2.5.5",
+        "pandas": "3.1.1"
+      }
+    },
+    {
+      "variant": "enhanced",
+      "stock": "01.Bank",
+      "seed": 43,
+      "epochs": 100,
+      "data_sha256": "51cc2d73572ac8a77684e6c913d1d699c7dd0f55d5df1ae4c88b1c01e5bd9057",
+      "training_end": "2022-05-25",
+      "holdout_start": "2022-05-26",
+      "holdout_end": "2022-06-30",
+      "training_samples": 83,
+      "adf_training_p_value": 0.9663709533204177,
+      "differenced": true,
+      "scoring": "one-step observed market dates, original Close units",
+      "model": {
+        "mae": 0.24185835760373317,
+        "rmse": 0.3358656611472819,
+        "direction_accuracy_on_moving_days": 0.5,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "persistence_baseline": {
+        "mae": 0.23807692307692285,
+        "rmse": 0.3326293848900116,
+        "direction_accuracy_on_moving_days": 0.0,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "beats_baseline_mae": false,
+      "runtime": {
+        "python": "3.14.6",
+        "torch": "2.15.0",
+        "numpy": "2.5.5",
+        "pandas": "3.1.1"
+      }
+    },
+    {
+      "variant": "enhanced",
+      "stock": "01.Bank",
+      "seed": 44,
+      "epochs": 100,
+      "data_sha256": "51cc2d73572ac8a77684e6c913d1d699c7dd0f55d5df1ae4c88b1c01e5bd9057",
+      "training_end": "2022-05-25",
+      "holdout_start": "2022-05-26",
+      "holdout_end": "2022-06-30",
+      "training_samples": 83,
+      "adf_training_p_value": 0.9663709533204177,
+      "differenced": true,
+      "scoring": "one-step observed market dates, original Close units",
+      "model": {
+        "mae": 0.23924769429060092,
+        "rmse": 0.3327825586525204,
+        "direction_accuracy_on_moving_days": 0.5,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "persistence_baseline": {
+        "mae": 0.23807692307692285,
+        "rmse": 0.3326293848900116,
+        "direction_accuracy_on_moving_days": 0.0,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "beats_baseline_mae": false,
+      "runtime": {
+        "python": "3.14.6",
+        "torch": "2.15.0",
+        "numpy": "2.5.5",
+        "pandas": "3.1.1"
+      }
+    },
+    {
+      "variant": "standard",
+      "stock": "01.Bank",
+      "seed": 42,
+      "epochs": 20,
+      "data_sha256": "51cc2d73572ac8a77684e6c913d1d699c7dd0f55d5df1ae4c88b1c01e5bd9057",
+      "training_end": "2022-05-25",
+      "holdout_start": "2022-05-26",
+      "holdout_end": "2022-06-30",
+      "training_samples": 83,
+      "adf_training_p_value": 0.9663709533204177,
+      "differenced": true,
+      "scoring": "one-step observed market dates, original Close units",
+      "model": {
+        "mae": 0.24996401718029618,
+        "rmse": 0.3418064180083406,
+        "direction_accuracy_on_moving_days": 0.5,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "persistence_baseline": {
+        "mae": 0.23807692307692285,
+        "rmse": 0.3326293848900116,
+        "direction_accuracy_on_moving_days": 0.0,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "beats_baseline_mae": false,
+      "runtime": {
+        "python": "3.14.6",
+        "torch": "2.15.0",
+        "numpy": "2.5.5",
+        "pandas": "3.1.1"
+      }
+    },
+    {
+      "variant": "standard",
+      "stock": "01.Bank",
+      "seed": 43,
+      "epochs": 20,
+      "data_sha256": "51cc2d73572ac8a77684e6c913d1d699c7dd0f55d5df1ae4c88b1c01e5bd9057",
+      "training_end": "2022-05-25",
+      "holdout_start": "2022-05-26",
+      "holdout_end": "2022-06-30",
+      "training_samples": 83,
+      "adf_training_p_value": 0.9663709533204177,
+      "differenced": true,
+      "scoring": "one-step observed market dates, original Close units",
+      "model": {
+        "mae": 0.244648796870158,
+        "rmse": 0.33789261459434183,
+        "direction_accuracy_on_moving_days": 0.5,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "persistence_baseline": {
+        "mae": 0.23807692307692285,
+        "rmse": 0.3326293848900116,
+        "direction_accuracy_on_moving_days": 0.0,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "beats_baseline_mae": false,
+      "runtime": {
+        "python": "3.14.6",
+        "torch": "2.15.0",
+        "numpy": "2.5.5",
+        "pandas": "3.1.1"
+      }
+    },
+    {
+      "variant": "standard",
+      "stock": "01.Bank",
+      "seed": 44,
+      "epochs": 20,
+      "data_sha256": "51cc2d73572ac8a77684e6c913d1d699c7dd0f55d5df1ae4c88b1c01e5bd9057",
+      "training_end": "2022-05-25",
+      "holdout_start": "2022-05-26",
+      "holdout_end": "2022-06-30",
+      "training_samples": 83,
+      "adf_training_p_value": 0.9663709533204177,
+      "differenced": true,
+      "scoring": "one-step observed market dates, original Close units",
+      "model": {
+        "mae": 0.2697895840498117,
+        "rmse": 0.3566233201011664,
+        "direction_accuracy_on_moving_days": 0.5,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "persistence_baseline": {
+        "mae": 0.23807692307692285,
+        "rmse": 0.3326293848900116,
+        "direction_accuracy_on_moving_days": 0.0,
+        "moving_days": 24,
+        "observations": 26
+      },
+      "beats_baseline_mae": false,
+      "runtime": {
+        "python": "3.14.6",
+        "torch": "2.15.0",
+        "numpy": "2.5.5",
+        "pandas": "3.1.1"
+      }
+    }
+  ],
+  "repeat_standard_seed42_identical": true
+}

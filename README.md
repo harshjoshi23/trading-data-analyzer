@@ -155,3 +155,15 @@ Metrics describe the Close series after the stationarity transformation.
 When differencing is selected, these are changes in Close rather than
 reconstructed absolute prices. Historical model weights and prediction files
 must be regenerated to evaluate the corrected pipeline.
+
+## Reproducible retraining and baseline comparison
+
+Both scripts accept `--seed`, `--epochs`, `--data`, `--stock`,
+`--threads` and `--output-dir`. Importing them leaves training idle.
+Default data paths resolve relative to the source file, so the commands work
+from other directories. Each completed run saves a model checkpoint, dated
+price predictions and a JSON evaluation against last-close persistence.
+
+The [November 2026 evaluation](reports/evaluation-2026-11-19.md) reports all six
+runs and their limitations. Both LSTM variants underperformed persistence on
+held-out MAE. Historical example metrics above describe older pipeline runs.
