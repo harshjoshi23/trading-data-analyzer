@@ -143,3 +143,15 @@ The enhanced forecasting pipeline in `ongoing_dev_pipeline.py` builds on the bas
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
+## Evaluation split
+
+Both pipelines reserve the final 20% of dates as a chronological holdout.
+The stationarity decision and feature scaler are fitted using training dates
+only. Test windows may include preceding training observations, while every
+test target belongs to the holdout. Targets have shape `(samples, 1)` to
+match the model output and avoid broadcasting the training loss.
+
+Metrics describe the Close series after the stationarity transformation.
+When differencing is selected, these are changes in Close rather than
+reconstructed absolute prices. Historical model weights and prediction files
+must be regenerated to evaluate the corrected pipeline.

@@ -5,7 +5,10 @@ from statsmodels.tsa.stattools import adfuller
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
-from sklearn import preprocessing
+if __package__:
+    from .evaluation import prepare_sequences
+else:
+    from evaluation import prepare_sequences
 
 # Load the data
 def load_data(file_path):
@@ -22,7 +25,7 @@ def load_data(file_path):
         return None
 
 # Function to make data stationary
-def make_stationary(data, column='Close'):
+def make_stationary(data, column='Close', fit_end=None):
     """Check stationarity and apply differencing if needed."""
     # Ensure data is finite
     if not np.isfinite(data[column]).all():
@@ -30,7 +33,7 @@ def make_stationary(data, column='Close'):
         data[column] = data[column].replace([np.inf, -np.inf], np.nan).ffill()
         if data[column].isna().any():
             data[column] = data[column].bfill()  # Backup fill
-    result = adfuller(data[column].dropna())
+    result = adfuller(data[column].iloc[:fit_end].dropna())
     print(f'ADF Statistic for {column}: {result[0]}')
     print(f'p-value for {column}: {result[1]}')
     if result[1] > 0.05:
@@ -56,33 +59,22 @@ if data is not None:
         data_stock = data_stock.asfreq('D', method='ffill')
         
         # Make the Close price stationary
-        stationary_close = make_stationary(data_stock, 'Close')
+        split_row = int(len(data_stock) * 0.8)
+        split_date = data_stock.index[split_row]
+        stationary_close = make_stationary(data_stock, 'Close', fit_end=split_row)
         if stationary_close is None or len(stationary_close) == 0:
             print("Error: Stationary data is empty after processing.")
         else:
             # Prepare data for LSTM
             print("\nPreparing data for LSTM...")
-            scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
-            scaled_data = scaler.fit_transform(stationary_close.values[:, None])
-
-            # Create sequences
-            def create_sequences(data, seq_length=60):
-                """Create input-output sequences for LSTM."""
-                X, y = [], []
-                for i in range(len(data) - seq_length):
-                    X.append(data[i:i + seq_length])
-                    y.append(data[i + seq_length])
-                return np.array(X), np.array(y)
-
-            seq_length = 60
-            X, y = create_sequences(scaled_data)
-            if len(X) == 0:
-                print(f"Error: Not enough data points ({len(scaled_data)}) for sequence length {seq_length}.")
+            train_rows = int((stationary_close.index < split_date).sum())
+            features = stationary_close.values[:, None]
+            if train_rows <= 60 or train_rows >= len(features):
+                print("Error: Need at least 61 training rows and a held-out evaluation period.")
             else:
-                # Split into train and test sets
-                train_size = int(len(X) * 0.8)
-                X_train, X_test = X[:train_size], X[train_size:]
-                y_train, y_test = y[:train_size], y[train_size:]
+                X_train, X_test, y_train, y_test, scaler = prepare_sequences(
+                    features, train_rows, seq_length=60
+                )
 
                 # Convert to PyTorch tensors
                 X_train = torch.Tensor(X_train)
