@@ -167,3 +167,19 @@ price predictions and a JSON evaluation against last-close persistence.
 The [November 2026 evaluation](reports/evaluation-2026-11-19.md) reports all six
 runs and their limitations. Both LSTM variants underperformed persistence on
 held-out MAE. Historical example metrics above describe older pipeline runs.
+
+### Preserve individual training runs
+
+Each training invocation must use a fresh `--output-dir`, for example
+`python src/pipeline.py --epochs 1 --output-dir results/standard-run-001`.
+Existing directories (including empty ones), files and symlinks are rejected
+before loading data or training. The default path works once; choose a new
+path for subsequent runs. Previous model weights, predictions and evaluation
+reports are never intentionally replaced by a repeated invocation.
+
+Directory creation is exclusive immediately before writing artifacts, so
+concurrent runs targeting the same path cannot both publish there. This does
+not prevent wasted training work before that final check. Output writes are
+not transactional: an I/O failure can leave a partial new directory, which
+should be inspected rather than reused. These controls do not protect against
+external processes modifying artifacts.

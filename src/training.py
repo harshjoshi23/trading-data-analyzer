@@ -55,6 +55,8 @@ def load_stock(path, stock):
 def run(args, enhanced):
     if args.epochs < 1 or args.threads < 1:
         raise ValueError("Epochs and threads must be positive.")
+    if args.output_dir.exists() or args.output_dir.is_symlink():
+        raise ValueError("Output destination already exists; choose a fresh --output-dir for each run.")
     random.seed(args.seed)
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -150,7 +152,7 @@ def run(args, enhanced):
         "beats_baseline_mae": scores["mae"] < baseline["mae"],
         "runtime": {"python": platform.python_version(), "torch": torch.__version__, "numpy": np.__version__, "pandas": pd.__version__},
     }
-    args.output_dir.mkdir(parents=True, exist_ok=True)
+    args.output_dir.mkdir(parents=True, exist_ok=False)
     pd.DataFrame({
         "date": dates[observed_mask],
         "actual_close": actual,
