@@ -183,3 +183,9 @@ not prevent wasted training work before that final check. Output writes are
 not transactional: an I/O failure can leave a partial new directory, which
 should be inspected rather than reused. These controls do not protect against
 external processes modifying artifacts.
+
+Training CSV inputs require `Name`, `Date`, `Close` and `Volume` columns.
+Missing columns are reported by name before stock filtering. Dates for the
+selected stock must be present and parse as `DD-MM-YYYY`; missing dates are
+rejected before resampling. Invalid input exits with a CLI error and creates
+no training artifacts. Extra columns remain allowed.

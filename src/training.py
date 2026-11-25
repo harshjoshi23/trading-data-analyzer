@@ -37,10 +37,15 @@ class LSTMModel(nn.Module):
 
 def load_stock(path, stock):
     data = pd.read_csv(path)
+    missing = sorted({"Name", "Date", "Close", "Volume"} - set(data.columns))
+    if missing:
+        raise ValueError("Missing required columns: " + ", ".join(missing))
     data = data.loc[data["Name"] == stock].copy()
     if data.empty:
         raise ValueError(f"No observations for {stock!r}.")
     data["Date"] = pd.to_datetime(data["Date"], format="%d-%m-%Y", errors="raise")
+    if data["Date"].isna().any():
+        raise ValueError("Stock dates must not be missing.")
     data = data.set_index("Date").sort_index()
     if data.index.has_duplicates:
         raise ValueError("Stock dates must be unique.")
